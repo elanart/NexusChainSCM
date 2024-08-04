@@ -1,4 +1,4 @@
-package com.tll.pojo;
+package com.nxc.nexuschain.pojo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,10 +25,10 @@ public class Pricing {
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
 
-    @Column(name = "price", precision = 10, scale = 2)
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "effective_date")
+    @Column(name = "effective_date", nullable = false)
     private Instant effectiveDate;
 
 }

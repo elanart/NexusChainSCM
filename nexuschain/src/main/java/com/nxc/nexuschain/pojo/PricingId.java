@@ -1,4 +1,4 @@
-package com.tll.pojo;
+package com.nxc.nexuschain.pojo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -6,15 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import java.io.Serial;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Embeddable
 public class PricingId implements java.io.Serializable {
-    @Serial
-    private static final long serialVersionUID = 219010346490645331L;
+    private static final long serialVersionUID = 7374350598033584368L;
     @Column(name = "product_id", nullable = false, length = 50)
     private String productId;
 

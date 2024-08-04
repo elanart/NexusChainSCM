@@ -1,4 +1,4 @@
-package com.tll.pojo;
+package com.nxc.nexuschain.pojo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,11 +25,5 @@ public class TaxRate {
 
     @OneToMany(mappedBy = "tax")
     private Set<Invoice> invoices = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "tax")
-    private Set<PurchaseOrder> purchaseOrders = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "tax")
-    private Set<SaleOrder> saleOrders = new LinkedHashSet<>();
 
 }

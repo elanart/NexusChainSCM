@@ -1,4 +1,4 @@
-package com.tll.pojo;
+package com.nxc.nexuschain.pojo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -6,15 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import java.io.Serial;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Embeddable
 public class SupplierProductId implements java.io.Serializable {
-    @Serial
-    private static final long serialVersionUID = 945766549680177186L;
+    private static final long serialVersionUID = -1808980896923518324L;
     @Column(name = "supplier_id", nullable = false, length = 50)
     private String supplierId;
 

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh Sách Danh Mục</title>
+</head>
+<body>
+    <h1>Danh Sách Danh Mục</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Mô tả</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="c : ${categories}">
+                <td th:text="${c.name}">ID</td>
+                <td th:text="${c.description}">Mô tả</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

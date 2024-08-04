@@ -1,11 +1,11 @@
-package com.tll.pojo;
+package com.nxc.nexuschain.pojo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -13,11 +13,11 @@ import java.time.LocalDate;
 @Table(name = "supplier_rating")
 public class SupplierRating {
     @Id
-    @Column(name = "rating_id", nullable = false, length = 50)
-    private String ratingId;
+    @Column(name = "id", nullable = false, length = 50)
+    private String id;
 
     @Column(name = "review_date")
-    private LocalDate reviewDate;
+    private Instant reviewDate;
 
     @Column(name = "criteria", length = 100)
     private String criteria;
@@ -29,7 +29,7 @@ public class SupplierRating {
     @Column(name = "comments")
     private String comments;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 

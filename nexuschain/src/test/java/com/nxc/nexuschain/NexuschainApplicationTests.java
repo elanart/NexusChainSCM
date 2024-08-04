@@ -1,4 +1,4 @@
-package com.tll.nexuschain;
+package com.nxc.nexuschain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

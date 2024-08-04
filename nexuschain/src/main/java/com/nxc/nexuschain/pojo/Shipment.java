@@ -1,10 +1,10 @@
-package com.tll.pojo;
+package com.nxc.nexuschain.pojo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -16,28 +16,25 @@ public class Shipment {
     private String id;
 
     @Column(name = "shipment_date", nullable = false)
-    private LocalDate shipmentDate;
+    private Instant shipmentDate;
 
-    @Lob
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, length = 50)
     private String status;
 
     @Column(name = "tracking_number", length = 100)
     private String trackingNumber;
 
     @Column(name = "expected_delivery")
-    private LocalDate expectedDelivery;
+    private Instant expectedDelivery;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private ShipmentCompany company;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sale_id")
-    private SaleOrder sale;
+    @OneToOne(mappedBy = "shipment")
+    private PurchaseOrder purchaseOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "purchase_id")
-    private PurchaseOrder purchase;
+    @OneToOne(mappedBy = "shipment")
+    private SaleOrder saleOrder;
 
 }

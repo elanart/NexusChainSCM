@@ -1,4 +1,4 @@
-package com.tll.pojo;
+package com.nxc.nexuschain.pojo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,8 +28,12 @@ public class ShipmentCompany {
     @Column(name = "active")
     private Boolean active;
 
-    @Column(name = "rating", nullable = false, precision = 5, scale = 2)
+    @Column(name = "rating", precision = 5, scale = 2)
     private BigDecimal rating;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "company")
     private Set<Shipment> shipments = new LinkedHashSet<>();
