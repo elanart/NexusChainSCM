@@ -1,7 +1,7 @@
 package com.nxc.nexuschain.entity;
 
 import com.nxc.nexuschain.enums.OrderTypeEnum;
-import com.nxc.nexuschain.enums.ShippingStatus;
+import com.nxc.nexuschain.enums.ShippingStatusEnum;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "order")
+@Table(name = "\"order\"")
 public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,16 +28,20 @@ public class Order implements Serializable {
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
-    private ShippingStatus status;
+    private ShippingStatusEnum status;
 
     @Enumerated(EnumType.STRING)
     private OrderTypeEnum type;
 
+    @Builder.Default
+    @Column(name = "deleted")
+    private Boolean isDeleted = false;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "order")
+    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "order")
     private Set<Invoice> invoices;
 
     @Valid

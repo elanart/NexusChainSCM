@@ -1,6 +1,7 @@
 package com.nxc.nexuschain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nxc.nexuschain.enums.CriteriaEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +29,8 @@ public class Supplier implements Serializable {
     @Column(name = "review_date", updatable = false)
     private LocalDateTime reviewDate;
 
-    @Column(length = 300)
-    private String criterion;
+    @Enumerated(EnumType.STRING)
+    private CriteriaEnum criterion;
 
     @Column(precision = 3, scale = 2)
     private BigDecimal rating;

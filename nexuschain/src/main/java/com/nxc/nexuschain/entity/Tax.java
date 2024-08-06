@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 @Builder
@@ -25,4 +26,7 @@ public class Tax implements Serializable {
 
     @Column(precision = 5, scale = 2)
     private BigDecimal rate;
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "tax")
+    private Set<Invoice> invoices;
 }

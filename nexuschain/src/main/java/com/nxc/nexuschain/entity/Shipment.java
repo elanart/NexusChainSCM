@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -33,7 +35,20 @@ public class Shipment implements Serializable {
     @Column(name = "expected_delivery")
     private LocalDateTime expectedDelivery;
 
+    @Column(precision = 10, scale = 2)
+    private BigDecimal cost;
+
     @ManyToOne(cascade = { CascadeType.PERSIST })
-    @JoinColumn(name = "carrier_id")
+    @JoinColumn(name = "carrier_id", referencedColumnName = "id", nullable = false)
     private Carrier carrier;
+
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id", referencedColumnName = "id", nullable = false)
+    private Warehouse warehouse;
+
+    @OneToOne(mappedBy = "shipment")
+    private Invoice invoice;
+
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "shipment")
+    private Set<Pricing> pricings;
 }

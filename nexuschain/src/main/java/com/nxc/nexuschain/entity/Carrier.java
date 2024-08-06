@@ -30,6 +30,6 @@ public class Carrier implements Serializable {
     @OneToOne(optional = false)
     private User user;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "carrier")
+    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "carrier")
     private Set<Shipment> shipments;
 }

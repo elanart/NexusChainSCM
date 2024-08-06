@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ShippingStatus {
+public enum ShippingStatusEnum {
     SHIPPED,
     IN_TRANSIT,
     DELIVERED,

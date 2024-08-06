@@ -33,7 +33,9 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private Integer quantity;
 
-    private Boolean isDeleted;
+    @Builder.Default
+    @Column(name = "deleted")
+    private Boolean isDeleted = false;
 
     @ManyToOne(cascade = { CascadeType.PERSIST })
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -43,18 +45,12 @@ public class Product implements Serializable {
     @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "product")
     private Set<SupplierProduct> supplierProducts;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "product")
+    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "product")
     private Set<OrderDetail> orderDetails;
 
-//    @OneToMany(mappedBy = "product")
-//    private Set<Inventory> inventories = new LinkedHashSet<>();
-//
-//    @OneToMany(mappedBy = "product")
-//    private Set<Pricing> pricings = new LinkedHashSet<>();
-//
-//    @OneToMany(mappedBy = "product")
-//    private Set<PurchaseOrderDetail> purchaseOrderDetails = new LinkedHashSet<>();
-//
-//    @OneToMany(mappedBy = "product")
-//    private Set<SaleOrderDetail> saleOrderDetails = new LinkedHashSet<>();
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "product")
+    private Set<ProductInventory> productInventories;
+
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "product")
+    private Set<Pricing> pricings;
 }

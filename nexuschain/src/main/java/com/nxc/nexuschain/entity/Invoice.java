@@ -32,7 +32,11 @@ public class Invoice {
     @JoinColumn(name = "tax_id", referencedColumnName = "id")
     private Tax tax;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST })
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     private Order order;
+
+    @OneToOne
+    @JoinColumn(name = "shipment_id", referencedColumnName = "id")
+    private Shipment shipment;
 }

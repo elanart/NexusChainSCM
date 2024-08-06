@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -49,10 +50,24 @@ public class User implements Serializable {
     @Column(name = "updated_date", insertable = false)
     private LocalDateTime updatedDate;
 
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
+
     @Valid
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "user")
     private Account account;
 
-    @Enumerated(EnumType.STRING)
-    private RoleEnum role;
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "user")
+    private Set<Order> orders;
+
+    @PrePersist
+    protected void onCreate() {
+        this.isDeleted = false;
+        createdDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedDate = LocalDateTime.now();
+    }
 }

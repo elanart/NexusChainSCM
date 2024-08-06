@@ -25,7 +25,7 @@ public class OrderDetail implements Serializable {
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST })
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
