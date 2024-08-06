@@ -1,4 +1,4 @@
-package com.nxc.nexuschain.entity;
+package com.nxc.nexuschain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.nxc.nexuschain.entity;
+package com.nxc.nexuschain.entities;
 
 import com.nxc.nexuschain.enums.OrderTypeEnum;
 import com.nxc.nexuschain.enums.ShippingStatusEnum;

@@ -1,4 +1,4 @@
-package com.nxc.nexuschain.entity;
+package com.nxc.nexuschain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -16,22 +15,17 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "warehouse")
-public class Warehouse implements Serializable {
+@Table(name = "inventory")
+public class Inventory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String location;
+    private Integer quantity;
 
-    private Integer capacity;
-
-    @Column(precision = 10, scale = 2)
-    private BigDecimal cost;
-
-    @Builder.Default
-    @Column(name = "active")
-    private Boolean isActive = true;
+    @ManyToOne(cascade = { CascadeType.PERSIST })
+    @JoinColumn(name = "warehouse_id", referencedColumnName = "id", nullable = false)
+    private Warehouse warehouse;
 
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
@@ -39,14 +33,8 @@ public class Warehouse implements Serializable {
     @Column(name = "updated_date", insertable = false)
     private LocalDateTime updatedDate;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "warehouse")
-    private Set<Inventory> inventory;
-
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "warehouse")
-    private Set<Pricing> pricings;
-
-    @OneToMany(mappedBy = "warehouse")
-    private Set<Shipment> shipments;
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "inventory")
+    private Set<ProductInventory> productInventories;
 
     @PrePersist
     protected void onCreate() {

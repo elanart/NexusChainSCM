@@ -1,35 +1,36 @@
-package com.nxc.nexuschain.entity;
+package com.nxc.nexuschain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Set;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "carrier")
-public class Carrier implements Serializable {
+@Table(name = "account")
+public class Account implements Serializable {
     @Id
     private Long id;
 
-    @Column(precision = 3, scale = 2)
-    private BigDecimal rating;
+    @NotNull
+    @Column(length = 50, nullable = false)
+    private String username;
+
+    @NotNull
+    @Column(length = 300, nullable = false)
+    private String password;
 
     @JsonIgnore
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
     @MapsId
     @OneToOne(optional = false)
     private User user;
-
-    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "carrier")
-    private Set<Shipment> shipments;
 }
