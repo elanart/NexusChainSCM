@@ -21,8 +21,8 @@ import java.util.Set;
 @Table(name = "\"user\"")
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @NotNull
     @Column(name = "full_name", length = 50, nullable = false)
@@ -44,7 +44,10 @@ public class User implements Serializable {
     @Column(name = "deleted")
     private Boolean isDeleted = false;
 
-    @Column(name = "created_date",updatable = false)
+    @Column
+    private Boolean isConfirm;
+
+    @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
 
     @Column(name = "updated_date", insertable = false)
@@ -54,20 +57,21 @@ public class User implements Serializable {
     private RoleEnum role;
 
     @Valid
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "user")
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
     private Account account;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "user")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
     private Set<Order> orders;
 
     @PrePersist
     protected void onCreate() {
         this.isDeleted = false;
-        createdDate = LocalDateTime.now();
+        this.isConfirm = false;
+        this.createdDate = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 }

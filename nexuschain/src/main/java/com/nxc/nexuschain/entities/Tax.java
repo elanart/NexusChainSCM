@@ -18,8 +18,8 @@ import java.util.Set;
 @Table(name = "tax")
 public class Tax implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(length = 100)
     private String region;

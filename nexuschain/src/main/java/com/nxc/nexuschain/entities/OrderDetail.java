@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @Table(name = "order_detail")
 public class OrderDetail implements Serializable {
     @Id
-    private Long id;
+    private String id;
 
     private Integer quantity;
 

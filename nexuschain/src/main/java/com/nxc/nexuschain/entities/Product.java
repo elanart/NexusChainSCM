@@ -19,8 +19,8 @@ import java.util.Set;
 @Table(name = "product")
 public class Product implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -30,27 +30,24 @@ public class Product implements Serializable {
     @Column(precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(nullable = false)
-    private Integer quantity;
-
     @Builder.Default
     @Column(name = "deleted")
     private Boolean isDeleted = false;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST })
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
     @JsonIgnore
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "product")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "product")
     private Set<SupplierProduct> supplierProducts;
 
-    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "product")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "product")
     private Set<OrderDetail> orderDetails;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "product")
-    private Set<ProductInventory> productInventories;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "product")
+    private Set<Inventory> inventories;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "product")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "product")
     private Set<Pricing> pricings;
 }

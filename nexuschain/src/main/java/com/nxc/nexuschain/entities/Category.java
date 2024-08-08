@@ -18,8 +18,8 @@ import java.util.Set;
 @Table(name = "category")
 public class Category implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false)
     private String name;
@@ -27,6 +27,6 @@ public class Category implements Serializable {
     private String description;
 
     @JsonIgnore
-    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "category")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "category")
     private Set<Product> products;
 }

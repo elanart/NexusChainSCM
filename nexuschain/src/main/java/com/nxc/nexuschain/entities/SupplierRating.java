@@ -1,5 +1,6 @@
 package com.nxc.nexuschain.entities;
 
+import com.nxc.nexuschain.enums.CriteriaEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,27 +16,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "pricing")
-public class Pricing implements Serializable {
+@Table(name = "supplier_rating")
+public class SupplierRating implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")
-    private Product product;
+    @Enumerated(EnumType.STRING)
+    private CriteriaEnum criterion;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = false, referencedColumnName = "id")
-    private User supplier;
+    @Column(precision = 3, scale = 2)
+    private BigDecimal rating;
 
-    @ManyToOne
-    @JoinColumn(name = "shipment_id", referencedColumnName = "id")
-    private Shipment shipment;
-
-    @ManyToOne
-    @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
-    private Warehouse warehouse;
+    @Column(length = 300)
+    private String comment;
 
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
@@ -42,13 +37,17 @@ public class Pricing implements Serializable {
     @Column(name = "updated_date", insertable = false)
     private LocalDateTime updatedDate;
 
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private Supplier supplier;
+
     @PrePersist
     protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
+        createdDate = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedDate = LocalDateTime.now();
+        updatedDate = LocalDateTime.now();
     }
 }

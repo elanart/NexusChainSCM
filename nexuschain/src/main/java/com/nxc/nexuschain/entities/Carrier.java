@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "carrier")
 public class Carrier implements Serializable {
     @Id
-    private Long id;
+    private String id;
 
     @Column(precision = 3, scale = 2)
     private BigDecimal rating;
@@ -30,6 +30,6 @@ public class Carrier implements Serializable {
     @OneToOne(optional = false)
     private User user;
 
-    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "carrier")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "carrier")
     private Set<Shipment> shipments;
 }

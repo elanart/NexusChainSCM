@@ -21,8 +21,8 @@ import java.util.Set;
 @Table(name = "\"order\"")
 public class Order implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "order_date")
     private LocalDateTime orderDate;
@@ -41,10 +41,10 @@ public class Order implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @OneToMany(cascade = { CascadeType.PERSIST }, mappedBy = "order")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "order")
     private Set<Invoice> invoices;
 
     @Valid
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "order")
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "order")
     private OrderDetail orderDetail;
 }

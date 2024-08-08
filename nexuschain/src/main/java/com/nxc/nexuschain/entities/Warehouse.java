@@ -19,8 +19,8 @@ import java.util.Set;
 @Table(name = "warehouse")
 public class Warehouse implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     private String location;
 
@@ -39,10 +39,10 @@ public class Warehouse implements Serializable {
     @Column(name = "updated_date", insertable = false)
     private LocalDateTime updatedDate;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "warehouse")
-    private Set<Inventory> inventory;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "warehouse")
+    private Set<Inventory> inventories;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "warehouse")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "warehouse")
     private Set<Pricing> pricings;
 
     @OneToMany(mappedBy = "warehouse")

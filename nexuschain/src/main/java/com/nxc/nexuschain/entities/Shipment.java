@@ -20,8 +20,8 @@ import java.util.Set;
 @Table(name = "shipment")
 public class Shipment implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "shipment_date", nullable = false)
     private LocalDateTime shipmentDate;
@@ -38,7 +38,7 @@ public class Shipment implements Serializable {
     @Column(precision = 10, scale = 2)
     private BigDecimal cost;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST })
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "carrier_id", referencedColumnName = "id", nullable = false)
     private Carrier carrier;
 
@@ -49,6 +49,6 @@ public class Shipment implements Serializable {
     @OneToOne(mappedBy = "shipment")
     private Invoice invoice;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "shipment")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "shipment")
     private Set<Pricing> pricings;
 }

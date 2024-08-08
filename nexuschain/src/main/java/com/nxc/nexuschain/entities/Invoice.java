@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -15,10 +16,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "invoice")
-public class Invoice {
+public class Invoice implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "invoice_date")
     private LocalDateTime invoiceDate;
@@ -28,7 +29,7 @@ public class Invoice {
 
     private Boolean paid;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST })
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "tax_id", referencedColumnName = "id")
     private Tax tax;
 

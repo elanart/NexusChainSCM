@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Table(name = "account")
 public class Account implements Serializable {
     @Id
-    private Long id;
+    private String id;
 
     @NotNull
     @Column(length = 50, nullable = false)

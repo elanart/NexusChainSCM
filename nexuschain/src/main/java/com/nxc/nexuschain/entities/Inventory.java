@@ -18,14 +18,8 @@ import java.util.Set;
 @Table(name = "inventory")
 public class Inventory implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Integer quantity;
-
-    @ManyToOne(cascade = { CascadeType.PERSIST })
-    @JoinColumn(name = "warehouse_id", referencedColumnName = "id", nullable = false)
-    private Warehouse warehouse;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
@@ -33,8 +27,19 @@ public class Inventory implements Serializable {
     @Column(name = "updated_date", insertable = false)
     private LocalDateTime updatedDate;
 
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "inventory")
-    private Set<ProductInventory> productInventories;
+    @Column(nullable = false)
+    private Integer quantity;
+
+    @Column(name = "expiry_date")
+    private LocalDateTime expiryDate;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "warehouse_id", referencedColumnName = "id", nullable = false)
+    private Warehouse warehouse;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
+    private Product product;
 
     @PrePersist
     protected void onCreate() {
