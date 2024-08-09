@@ -1,17 +1,16 @@
-package com.nxc.nexuschain.dto.supplier.response;
+package com.nxc.nexuschain.dto.user.response;
 
-import com.nxc.nexuschain.dto.user.response.UserResponse;
+import com.nxc.nexuschain.dto.account.request.AccountRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SupplierRegistrationResponse {
+public class UserDetailResponse {
     private UserResponse user;
+    private AccountRequest account;
 }

@@ -1,5 +1,6 @@
 package com.nxc.nexuschain.dto.supplier.response;
 
+import com.nxc.nexuschain.dto.user.response.UserDetailResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SupplierDetailsResponse {
-    private String id;
-    private String fullName;
-    private String email;
-    private String address;
-    private String phone;
-    private String avatar;
+    private UserDetailResponse user;
     private String paymentTerms;
-    private LocalDateTime createdDate;
 }
