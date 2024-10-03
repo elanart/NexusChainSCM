@@ -1,38 +1,48 @@
 package com.nxc.nexuschain.entities;
 
+import com.nxc.nexuschain.enums.ShippingStatusEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "inventory")
-public class Inventory {
+@Table(name = "delivery")
+public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "carrier_id")
+    private Carrier carrier;
 
-    @NotNull
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    @Column(name = "delivery_date")
+    private LocalDate deliveryDate;
 
-    @Column(name = "expiry_date")
-    private LocalDate expiryDate;
+    @Enumerated(EnumType.STRING)
+    private ShippingStatusEnum status;
+
+    @Column(name = "cost", precision = 10, scale = 2)
+    private BigDecimal cost;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_date")
@@ -41,5 +51,8 @@ public class Inventory {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "updated_date")
     private Instant updatedDate;
+
+    @OneToMany(mappedBy = "delivery")
+    private Set<DeliveryTracking> deliveryTrackings = new LinkedHashSet<>();
 
 }

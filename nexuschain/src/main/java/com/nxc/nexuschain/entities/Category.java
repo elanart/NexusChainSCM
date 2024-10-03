@@ -1,32 +1,34 @@
 package com.nxc.nexuschain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "category")
-public class Category implements Serializable {
+public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @Column(nullable = false)
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
+    @Column(name = "description")
     private String description;
 
-    @JsonIgnore
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "category")
-    private Set<Product> products;
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products = new LinkedHashSet<>();
+
 }

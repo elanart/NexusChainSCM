@@ -1,54 +1,36 @@
 package com.nxc.nexuschain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "pricing")
-public class Pricing implements Serializable {
+public class Pricing {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = false, referencedColumnName = "id")
-    private User supplier;
+    @NotNull
+    @Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal unitPrice;
 
-    @ManyToOne
-    @JoinColumn(name = "shipment_id", referencedColumnName = "id")
-    private Shipment shipment;
+    @NotNull
+    @Column(name = "delivery_cost", nullable = false, precision = 10, scale = 2)
+    private BigDecimal deliveryCost;
 
-    @ManyToOne
-    @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
-    private Warehouse warehouse;
-
-    @Column(name = "created_date", updatable = false)
-    private LocalDateTime createdDate;
-
-    @Column(name = "updated_date", insertable = false)
-    private LocalDateTime updatedDate;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedDate = LocalDateTime.now();
-    }
 }

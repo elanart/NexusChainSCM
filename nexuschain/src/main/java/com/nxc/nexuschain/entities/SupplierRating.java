@@ -2,52 +2,45 @@ package com.nxc.nexuschain.entities;
 
 import com.nxc.nexuschain.enums.CriteriaEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "supplier_rating")
-public class SupplierRating implements Serializable {
+public class SupplierRating {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
+
+    @NotNull
+    @Column(name = "rating", nullable = false)
+    private Integer rating;
+
+    @Lob
+    @Column(name = "comment")
+    private String comment;
 
     @Enumerated(EnumType.STRING)
     private CriteriaEnum criterion;
 
-    @Column(precision = 3, scale = 2)
-    private BigDecimal rating;
-
-    @Column(length = 300)
-    private String comment;
-
-    @Column(name = "created_date", updatable = false)
-    private LocalDateTime createdDate;
-
-    @Column(name = "updated_date", insertable = false)
-    private LocalDateTime updatedDate;
-
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
-    @PrePersist
-    protected void onCreate() {
-        createdDate = LocalDateTime.now();
-    }
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_date")
+    private Instant createdDate;
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedDate = LocalDateTime.now();
-    }
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "updated_date")
+    private Instant updatedDate;
+
 }

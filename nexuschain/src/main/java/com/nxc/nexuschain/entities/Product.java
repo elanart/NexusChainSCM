@@ -1,53 +1,67 @@
 package com.nxc.nexuschain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "product")
-public class Product implements Serializable {
+public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @Column(nullable = false, length = 100)
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
-    private String description;
-
-    @Column(precision = 10, scale = 2)
+    @NotNull
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Builder.Default
-    @Column(name = "deleted")
-    private Boolean isDeleted = false;
+    @Size(max = 255)
+    @Column(name = "image")
+    private String image;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @Lob
+    @Column(name = "description")
+    private String description;
+
+    @ColumnDefault("0")
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_date")
+    private Instant createdDate;
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "updated_date")
+    private Instant updatedDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "product")
-    private Set<SupplierProduct> supplierProducts;
+    @OneToMany(mappedBy = "product")
+    private Set<Inventory> inventories = new LinkedHashSet<>();
 
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "product")
-    private Set<OrderDetail> orderDetails;
+    @OneToMany(mappedBy = "product")
+    private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "product")
-    private Set<Inventory> inventories;
+    @OneToMany(mappedBy = "product")
+    private Set<Pricing> pricings = new LinkedHashSet<>();
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "product")
-    private Set<Pricing> pricings;
 }

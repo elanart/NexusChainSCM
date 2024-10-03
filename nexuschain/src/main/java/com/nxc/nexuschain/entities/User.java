@@ -1,77 +1,100 @@
 package com.nxc.nexuschain.entities;
 
+import com.nxc.nexuschain.enums.OrderStatusEnum;
 import com.nxc.nexuschain.enums.RoleEnum;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
-@Table(name = "\"user\"")
-public class User implements Serializable {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "user")
+public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
+    @Size(max = 255)
     @NotNull
-    @Column(name = "full_name", length = 50, nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(length = 300)
-    private String address;
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "username", nullable = false)
+    private String username;
 
-    @Column(length = 12)
-    private String phone;
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "password", nullable = false)
+    private String password;
 
-    @Column(length = 300)
-    private String avatar;
-
-    @Column(length = 200)
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Builder.Default
-    @Column(name = "deleted")
-    private Boolean isDeleted = false;
+    @Size(max = 255)
+    @Column(name = "avatar")
+    private String avatar;
 
-    @Column
-    private Boolean isConfirm;
+    @Size(max = 255)
+    @Column(name = "address")
+    private String address;
 
-    @Column(name = "created_date", updatable = false)
-    private LocalDateTime createdDate;
-
-    @Column(name = "updated_date", insertable = false)
-    private LocalDateTime updatedDate;
+    @Size(max = 20)
+    @Column(name = "phone", length = 20)
+    private String phone;
 
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
-    @Valid
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
-    private Account account;
+    @ColumnDefault("0")
+    @Column(name = "is_confirm")
+    private Boolean isConfirm;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
-    private Set<Order> orders;
+    @ColumnDefault("0")
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
+
+    @Column(name = "updated_date")
+    private LocalDateTime updatedDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "carrier_id", referencedColumnName = "id")
+    private Carrier carrier;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Invoice> invoices = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders = new LinkedHashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
+    private Supplier supplier;
 
     @PrePersist
     protected void onCreate() {
-        this.isDeleted = false;
-        this.isConfirm = false;
-        this.createdDate = LocalDateTime.now();
+        createdDate = LocalDateTime.now();
     }
 
     @PreUpdate
-    protected void onUpdate() {
-        this.updatedDate = LocalDateTime.now();
+    protected void onupdate() {
+        updatedDate = LocalDateTime.now();
     }
 }

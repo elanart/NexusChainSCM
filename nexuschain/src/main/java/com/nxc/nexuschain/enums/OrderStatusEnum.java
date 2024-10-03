@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum OrderStatusEnum {
     PENDING,
+    CONFIRMED,
     COMPLETED,
-    CANCELLED;
+    CANCELED;
 }

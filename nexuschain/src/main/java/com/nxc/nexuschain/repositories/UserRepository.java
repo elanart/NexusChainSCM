@@ -1,13 +1,14 @@
 package com.nxc.nexuschain.repositories;
 
 import com.nxc.nexuschain.entities.User;
-import com.nxc.nexuschain.enums.RoleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
-    List<User> findByRole(RoleEnum role);
+@Transactional
+public interface UserRepository extends JpaRepository<User, Integer> {
+    Optional<User> findByUsername(String username);
 }

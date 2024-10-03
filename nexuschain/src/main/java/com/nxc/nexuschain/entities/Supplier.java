@@ -1,39 +1,36 @@
 package com.nxc.nexuschain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nxc.nexuschain.enums.CriteriaEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "supplier")
-public class Supplier implements Serializable {
+public class Supplier {
     @Id
-    private String id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @Column(name = "payment_terms", length = 300)
-    private String paymentTerms;
-
-    @JsonIgnore
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
     @MapsId
-    @OneToOne(optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @OneToOne(mappedBy = "supplier")
-    private SupplierRating supplierRating;
+    @Lob
+    @Column(name = "payment_terms")
+    private String paymentTerms;
 
-    @JsonIgnore
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "supplier")
-    private Set<SupplierProduct> supplierProducts;
+    @OneToMany(mappedBy = "supplier")
+    private Set<Pricing> pricings = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "supplier")
+    private Set<SupplierRating> supplierRatings = new LinkedHashSet<>();
+
 }

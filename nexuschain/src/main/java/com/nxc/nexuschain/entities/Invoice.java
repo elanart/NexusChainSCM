@@ -1,43 +1,36 @@
 package com.nxc.nexuschain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "invoice")
-public class Invoice implements Serializable {
+public class Invoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @Column(name = "invoice_date")
-    private LocalDateTime invoiceDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "total_amount", precision = 10, scale = 2)
-    private BigDecimal totalAmount;
-
-    private Boolean paid;
-
-    @ManyToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "tax_id", referencedColumnName = "id")
-    private Tax tax;
-
-    @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
     private Order order;
 
-    @OneToOne
-    @JoinColumn(name = "shipment_id", referencedColumnName = "id")
-    private Shipment shipment;
+    @Column(name = "total_amount")
+    private BigDecimal totalAmount;
+
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
+
 }

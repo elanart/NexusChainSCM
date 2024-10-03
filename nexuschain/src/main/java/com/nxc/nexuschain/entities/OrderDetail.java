@@ -1,37 +1,36 @@
 package com.nxc.nexuschain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "order_detail")
-public class OrderDetail implements Serializable {
+public class OrderDetail {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    private Integer quantity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal price;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    @JsonIgnore
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @MapsId
-    @OneToOne(optional = false)
-    private Order order;
+    @NotNull
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @NotNull
+    @Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal unitPrice;
+
 }

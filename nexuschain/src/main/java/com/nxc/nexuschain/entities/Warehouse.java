@@ -1,60 +1,56 @@
 package com.nxc.nexuschain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "warehouse")
-public class Warehouse implements Serializable {
+public class Warehouse {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "location", nullable = false)
     private String location;
 
+    @NotNull
+    @Column(name = "capacity", nullable = false)
     private Integer capacity;
 
-    @Column(precision = 10, scale = 2)
+    @NotNull
+    @Column(name = "cost", nullable = false, precision = 10, scale = 2)
     private BigDecimal cost;
 
-    @Builder.Default
-    @Column(name = "active")
-    private Boolean isActive = true;
+    @ColumnDefault("1")
+    @Column(name = "is_active")
+    private Boolean isActive;
 
-    @Column(name = "created_date", updatable = false)
-    private LocalDateTime createdDate;
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_date")
+    private Instant createdDate;
 
-    @Column(name = "updated_date", insertable = false)
-    private LocalDateTime updatedDate;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "warehouse")
-    private Set<Inventory> inventories;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "warehouse")
-    private Set<Pricing> pricings;
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "updated_date")
+    private Instant updatedDate;
 
     @OneToMany(mappedBy = "warehouse")
-    private Set<Shipment> shipments;
+    private Set<Delivery> deliveries = new LinkedHashSet<>();
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
-    }
+    @OneToMany(mappedBy = "warehouse")
+    private Set<Inventory> inventories = new LinkedHashSet<>();
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedDate = LocalDateTime.now();
-    }
 }
